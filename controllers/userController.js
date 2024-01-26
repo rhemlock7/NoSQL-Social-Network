@@ -39,34 +39,51 @@ module.exports = {
     },
 
     // TODO: Update a single user by ID
+    async updateUser(req, res) {
+        try {
+            const updatedUser = await User.findOneAndUpdate(
+                { _id: req.params.userId },
+                { $set: req.body },
+                { runValidators: true, new: true }
+            );
+
+            if (!updatedUser) {
+                res.status(404).json({ message: 'No user with this id!' });
+            }
+
+            res.json(updatedUser);
+        } catch (err) {
+            res.status(500).json(err);
+        }
+    },
 
     // Deletes an existing user 
     // TODO: remove their thoughts when user gets deleted
     async deleteUser(req, res) {
-        try {
-            const user = await User.findOneAndDelete({ _id: req.params.userId});
+    try {
+        const user = await User.findOneAndDelete({ _id: req.params.userId });
 
-            if (!user) {
-                return res.status(404).json({ message: 'No user exists with that ID' });
-            }
-
-            // const thoughts = await Thought.findOneAndDelete(
-            //     { students: req.params.userId },
-            //     { $pull: { students: req.params.studentId } },
-            //     { new: true }
-            // );
-
-            // if (!thoughts) {
-            //     return res.status(404).json({
-            //         message: 'User deleted, but no thoughts found',
-            //     });
-            // }
-
-            res.json({ message: 'User successfully deleted' });
-        } catch (err) {
-            console.log(err);
-            res.status(500).json(err);
+        if (!user) {
+            return res.status(404).json({ message: 'No user exists with that ID' });
         }
-    },
+
+        // const thoughts = await Thought.findOneAndDelete(
+        //     { students: req.params.userId },
+        //     { $pull: { students: req.params.studentId } },
+        //     { new: true }
+        // );
+
+        // if (!thoughts) {
+        //     return res.status(404).json({
+        //         message: 'User deleted, but no thoughts found',
+        //     });
+        // }
+
+        res.json({ message: 'User successfully deleted' });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json(err);
+    }
+},
 
 }
